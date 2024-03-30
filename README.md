@@ -1,5 +1,5 @@
 ### 1. Top-down shooter
-Introduction to 2D nodes, how files are ordered. <br/><br/>
+<span style="font-size:0.5em;"> Introduction to 2D nodes, how files are ordered. </span><br/><br/>
 
 **Issues** (not sure if will fix these as this was just a good intro to Godot):
 - Code repeats in places, could do clean-up. 
