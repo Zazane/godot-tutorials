@@ -1,0 +1,66 @@
+[gd_scene load_steps=7 format=3 uid="uid://do5artq7mm6ee"]
+
+[ext_resource type="Texture2D" uid="uid://b0qm4e20pxrtf" path="res://graphics/enemies/scout.png" id="1_d7s1k"]
+[ext_resource type="Script" path="res://scenes/enemies/scout.gd" id="1_lmpgl"]
+[ext_resource type="Shader" path="res://scenes/enemies/scout.gdshader" id="2_k7c6l"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fvqyi"]
+radius = 47.0425
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5ahto"]
+shader = ExtResource("2_k7c6l")
+shader_parameter/color = Color(0.694118, 0.772549, 0.941176, 1)
+shader_parameter/progress = 0.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0tc1v"]
+radius = 915.066
+
+[node name="Scout" type="CharacterBody2D" groups=["Entity", "Scouts"]]
+collision_layer = 2
+collision_mask = 15
+script = ExtResource("1_lmpgl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+rotation = 1.5708
+shape = SubResource("CircleShape2D_fvqyi")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_5ahto")
+position = Vector2(37, 23)
+rotation = 1.5708
+texture = ExtResource("1_d7s1k")
+
+[node name="AttackArea" type="Area2D" parent="."]
+visible = false
+collision_layer = 16
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource("CircleShape2D_0tc1v")
+
+[node name="LaserSpawnPositions" type="Node2D" parent="."]
+position = Vector2(37, 23)
+rotation = 1.5708
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="Marker2D" type="Marker2D" parent="LaserSpawnPositions"]
+position = Vector2(-53, -80)
+
+[node name="Marker2D2" type="Marker2D" parent="LaserSpawnPositions"]
+position = Vector2(-15, -89)
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="LaserTimer" type="Timer" parent="Timers"]
+
+[node name="HitTimer" type="Timer" parent="Timers"]
+wait_time = 0.2
+one_shot = true
+
+[connection signal="body_entered" from="AttackArea" to="." method="_on_attack_area_body_entered"]
+[connection signal="body_exited" from="AttackArea" to="." method="_on_attack_area_body_exited"]
+[connection signal="timeout" from="Timers/LaserTimer" to="." method="_on_laser_timer_timeout"]
+[connection signal="timeout" from="Timers/HitTimer" to="." method="_on_hit_timer_timeout"]
